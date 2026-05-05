@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Checklist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChecklistController extends Controller
 {
@@ -11,5 +13,23 @@ class ChecklistController extends Controller
         $checklists = $request->user()->checklists;
 
         return inertia('Home', ['checklists' => $checklists]);
+    }
+
+    public function edit(Checklist $checklist)
+    {
+        return inertia('checklists/EditChecklist', [
+            'checklist' => $checklist
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $checklist = new Checklist();
+        DB::transaction(function() use ($checklist, $request) {
+            $checklist->fill(['owner_id' => $request->user()->id]);
+            $checklist->save();
+        });
+
+        return to_route('checklists.edit', ['checklist' => $checklist->id]);
     }
 }

@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->foreignUlid('checklist_id')->constrained();
             $table->boolean('is_checked')->default(false);
-            $table->timestamp('checked_at');
+            $table->string('title');
             $table->unsignedInteger('position');
         });
     }

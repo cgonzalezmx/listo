@@ -10,7 +10,8 @@
         "target": "esnext",
         "types": [
             "node",
-            "vite/client"
+            "vite/client",
+            "svelte"
         ],
         "lib": [
             "ESNext",

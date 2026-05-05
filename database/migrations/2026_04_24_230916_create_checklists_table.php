@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('checklists', function (Blueprint $table) {
-            $table->ulid('id');
+            $table->ulid('id')->primary();
             $table->timestamps();
-            $table->foreignUlid('owner_id')->constrained(table: 'users', column: 'id');
+            $table->foreignUuid('owner_id')->constrained(table: 'users');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_public')->default(false);
