@@ -1,4 +1,6 @@
-interface Checklist {
+import type { Item } from "./item";
+
+export interface Checklist {
     id: string;
     created_at: string;
     updated_at: string;
@@ -7,4 +9,5 @@ interface Checklist {
     description?: string;
     is_public: boolean;
     is_archived: boolean;
+    items: Item[];
 }

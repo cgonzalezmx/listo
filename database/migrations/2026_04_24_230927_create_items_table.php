@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->foreignUlid('checklist_id')->constrained();
             $table->boolean('is_checked')->default(false);
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->unsignedInteger('position');
         });
     }

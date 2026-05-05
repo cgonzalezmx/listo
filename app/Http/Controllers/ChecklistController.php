@@ -17,8 +17,10 @@ class ChecklistController extends Controller
 
     public function edit(Checklist $checklist)
     {
+        $checklist->load('items');
+
         return inertia('checklists/EditChecklist', [
-            'checklist' => $checklist
+            'checklist' => $checklist,
         ]);
     }
 
@@ -27,6 +29,16 @@ class ChecklistController extends Controller
         $checklist = new Checklist();
         DB::transaction(function() use ($checklist, $request) {
             $checklist->fill(['owner_id' => $request->user()->id]);
+            $checklist->save();
+        });
+
+        return to_route('checklists.edit', ['checklist' => $checklist->id]);
+    }
+
+    public function update(Checklist $checklist, Request $request)
+    {
+        DB::transaction(function() use ($checklist, $request) {
+            $checklist->fill($request->input());
             $checklist->save();
         });
 

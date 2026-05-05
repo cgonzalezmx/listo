@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Link } from "@inertiajs/svelte";
 import { ListOutline } from 'flowbite-svelte-icons';
+import type { Checklist } from "@/types/checklist";
 
 interface Props {
     checklists: Checklist[];
