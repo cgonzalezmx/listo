@@ -9,10 +9,16 @@ const clickOutside: Action = (el) => {
             !el.contains(event.target as Node) && menuState.close();
         }
 
+        function handleEscape(event: KeyboardEvent) {
+            event.key === 'Escape' && menuState.close();
+        }
+
         document.addEventListener('click', handleClick, true);
+        document.addEventListener('keydown', handleEscape, true);
 
         return () => {
             document.removeEventListener('click', handleClick, true);
+            document.removeEventListener('keydown', handleEscape, true);
         }
     });
 }
@@ -23,7 +29,7 @@ const clickOutside: Action = (el) => {
         <ul>
             {#each menuState.items as item}
                 <li>
-                    <button onclick={item.command} class="cursor-pointer py-1 px-2 bg-slate-50 hover:brightness-95 w-full">
+                    <button onclick={item.command} class="cursor-pointer py-1 px-2 bg-slate-50 hover:brightness-95 w-full rounded text-left">
                         {item.label}
                     </button>
                 </li>
