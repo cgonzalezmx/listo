@@ -1,4 +1,5 @@
 <script lang="ts">
+import PopupMenu from "@/components/PopupMenu.svelte";
 import type { Snippet } from "svelte";
 
 let { children }: { children: Snippet } = $props();
@@ -6,4 +7,5 @@ let { children }: { children: Snippet } = $props();
 
 <div>
     {@render children?.()}
+    <PopupMenu/>
 </div>
