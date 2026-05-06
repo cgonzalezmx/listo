@@ -1,0 +1,18 @@
+import type { MenuItem } from "@/types/menu.js";
+
+export const menuState = $state({
+    isOpen: false,
+    x: 0,
+    y: 0,
+    items: {} as MenuItem[],
+    open(event: Event, items: MenuItem[]) {
+        const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+        this.items = items;
+        this.x = rect.left + window.scrollX;
+        this.y = rect.bottom + window.scrollY
+        this.isOpen = true;
+    },
+    close() {
+        this.isOpen = false;
+    }
+});

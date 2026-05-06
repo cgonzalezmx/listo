@@ -1,21 +1,33 @@
 <script lang="ts">
-import { DotsVerticalOutline } from "flowbite-svelte-icons";
+import { menuState } from "@/lib/state/menu.svelte";
+import type { Action } from "svelte/action";
 
-interface Props {
-    items: any[];
+
+const clickOutside: Action = (el) => {
+    $effect(() => {
+        function handleClick(event: MouseEvent) {
+            !el.contains(event.target as Node) && menuState.close();
+        }
+
+        document.addEventListener('click', handleClick, true);
+
+        return () => {
+            document.removeEventListener('click', handleClick, true);
+        }
+    });
 }
-
-let { items }: Props = $props();
-let pop = $state(false);
 </script>
 
-<div class="flex relative">
-    <button class="cursor-pointer bg-indigo-200 px-1" onclick={() => pop = !pop}>
-        <DotsVerticalOutline size="lg"/>
-    </button>
-    {#if pop}
-        <div class="absolute bg-slate-100 top-full z-10">
-            xD
-        </div>
-    {/if}
-</div>
+{#if menuState.isOpen}
+    <div use:clickOutside class="absolute z-50 bg-slate-50 shadow rounded p-2 border border-slate-100" style="top: {menuState.y}px; left: {menuState.x}px">
+        <ul>
+            {#each menuState.items as item}
+                <li>
+                    <button onclick={item.command} class="cursor-pointer py-1 px-2 bg-slate-50 hover:brightness-95 w-full">
+                        {item.label}
+                    </button>
+                </li>
+            {/each}
+        </ul>
+    </div>
+{/if}
