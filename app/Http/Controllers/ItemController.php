@@ -24,8 +24,13 @@ class ItemController extends Controller
         return to_route('checklists.edit', ['checklist' => $checklist->id]);
     }
 
-    public function update(Checklist $checklist, Item $item)
+    public function update(Item $item, Request $request)
     {
-        dd($item);
+       DB::transaction(function() use ($item, $request) {
+            $item->fill($request->input());
+            $item->save();
+        });
+
+        return to_route('checklists.edit', ['checklist' => $item->checklist_id]);
     }
 }

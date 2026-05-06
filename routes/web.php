@@ -10,5 +10,5 @@ Route::middleware(['auth'])->group(function() {
     Route::patch('/checklists/{checklist}', [ChecklistController::class, 'update'])->name('checklists.update');
     Route::get('/checklists/edit/{checklist}', [ChecklistController::class, 'edit'])->name('checklists.edit');
     Route::post('/checklists/{checklist}/items', [ItemController::class, 'store']);
-    Route::patch('/checklists/{checklist}/items/{item}', [ItemController::class, 'update']);
+    Route::patch('/items/{item}', [ItemController::class, 'update']);
 });

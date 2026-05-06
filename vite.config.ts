@@ -18,7 +18,9 @@ export default defineConfig({
             refresh: true,
         }),
         tailwindcss(),
-        inertia(),
+        inertia({
+            ssr: false
+        }),
         svelte(),
     ],
     server: {
