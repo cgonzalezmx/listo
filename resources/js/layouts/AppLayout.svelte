@@ -27,6 +27,7 @@ const paths = [
                 <Link href={path.url}>{path.label}</Link>
             </div>
         {/each}
+        <Link href="/logout" method="post">Cerrar sesión</Link>
     </div>
     <div class="flex md:w-2/3 lg:w-3/4 xl:w-4/5">
         {@render children?.()}
