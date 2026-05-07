@@ -11,7 +11,6 @@ const clickOutside: Action = (el) => {
 
             if (outside && !fromInvoker) {
                 menuState.close();
-        console.log(menuState.isOpen)
             }
 
         }
