@@ -50,7 +50,7 @@ function addItem() {
 </script>
 
 <AppLayout>
-    <div class="flex flex-col md:w-[80%] md:rounded mx-auto bg-white p-6 md:shadow self-center md:max-h-[80vh] overflow-auto">
+    <div class="flex flex-col md:w-[80%] md:rounded mx-auto bg-white p-6 md:shadow self-start md:max-h-[80vh] md:mt-4 overflow-auto">
         <Link href="/" class="flex items-center gap-2"><ArrowLeftOutline/> Regresar</Link>
         <div class="flex items-center mb-6">
             <input use:debounce={{
