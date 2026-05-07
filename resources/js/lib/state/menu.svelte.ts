@@ -5,6 +5,7 @@ export const menuState = $state({
     x: 0,
     y: 0,
     items: {} as MenuItem[],
+    invoker: null as Element | null,
     open(event: Event, items: MenuItem[]) {
         const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
         this.items = items;

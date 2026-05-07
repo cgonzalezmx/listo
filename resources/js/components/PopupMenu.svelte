@@ -6,7 +6,14 @@ import type { Action } from "svelte/action";
 const clickOutside: Action = (el) => {
     $effect(() => {
         function handleClick(event: MouseEvent) {
-            !el.contains(event.target as Node) && menuState.close();
+            const outside = !el.contains(event.target as Node);
+            const fromInvoker = menuState.invoker?.contains(event.target as Node);
+
+            if (outside && !fromInvoker) {
+                menuState.close();
+        console.log(menuState.isOpen)
+            }
+
         }
 
         function handleEscape(event: KeyboardEvent) {
