@@ -8,7 +8,7 @@ export const menuState = $state({
     open(event: Event, items: MenuItem[]) {
         const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
         this.items = items;
-        this.x = rect.left + window.scrollX;
+        this.x = rect.left;
         this.y = rect.bottom + window.scrollY
         this.isOpen = true;
     },

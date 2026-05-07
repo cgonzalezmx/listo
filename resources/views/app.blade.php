@@ -7,7 +7,7 @@
         <title></title>
         <x-inertia::head/>
     </head>
-    <body class="bg-slate-200">
+    <body class="bg-slate-100">
         <x-inertia::app/>
     </body>
 </html>

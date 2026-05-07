@@ -5,7 +5,8 @@ import { ulid } from "ulid";
 import { formatDistanceToNow } from "date-fns";
 import { es } from 'date-fns/locale'
 import { debounce } from "@/lib/actions/debounce.svelte";
-    import type { Item } from "@/types/item";
+import type { Item } from "@/types/item";
+import { ArrowLeftOutline, PlusOutline, EditOutline } from "flowbite-svelte-icons";
 
 interface Props {
     checklist: Checklist;
@@ -47,37 +48,50 @@ function addItem() {
 }
 </script>
 
-<div class="flex flex-col w-[95vw] xl:w-2/3 bg-slate-50 rounded shadow mx-auto p-6">
-    <Link href="/">Regresar</Link>
-    <input use:debounce={{
-            onUpdate: updateChecklistTitle,
-            delay: 1000
-        }}
-        type="text"
-        value={checklist.title}
-        placeholder="Título"
-        class="text-4xl mb-6">
+<div class="flex flex-col md:w-2/3 xl:w-2/5 md:rounded mx-auto bg-white p-6 md:shadow self-center md:max-h-[80vh] overflow-auto">
+    <Link href="/" class="flex items-center gap-2"><ArrowLeftOutline/> Regresar</Link>
+    <div class="flex items-center mb-6">
+        <input use:debounce={{
+                onUpdate: updateChecklistTitle,
+                delay: 1000
+            }}
+            type="text"
+            value={checklist.title}
+            placeholder="Título"
+            class="text-4xl p-2 peer grow"
+        >
+        <EditOutline class="text-slate-400 h-12 w-12 opacity-0 peer-hover:opacity-100 peer-focus:hidden"/>
+    </div>
     <div class="text-slate-500 mb-3">
         {timePassed()}
     </div>
     <ul>
         {#each checklist.items as item (item.id)}
-            <li class="mb-3">
-                <input use:debounce={{ onUpdate: (target) => updateItem(target, { id: item.id, prop: 'is_checked' }) }}
-                    type="checkbox"
-                    checked={item.is_checked}
-                    class="">
-                <input use:debounce={{
-                        onUpdate: (target) => updateItem(target, { id: item.id, prop: 'title' }),
-                        delay: 1000
-                    }}
-                    type="text"
-                    value={item.title}
-                    placeholder="Elemento">
+            <li class="mb-2">
+                <div class="flex items-center">
+                    <input use:debounce={{ onUpdate: (target) => updateItem(target, { id: item.id, prop: 'is_checked' }) }}
+                        type="checkbox"
+                        checked={item.is_checked}
+                        class="mr-2 peer"
+                    >
+                    <div class="flex items-center grow">
+                        <input use:debounce={{
+                                onUpdate: (target) => updateItem(target, { id: item.id, prop: 'title' }),
+                                delay: 1000
+                            }}
+                            type="text"
+                            value={item.title}
+                            placeholder="Elemento"
+                            class="p-2 grow peer"
+                        >
+                        <EditOutline class="opacity-0 peer-hover:opacity-100 peer-focus:hidden h-6 w-6"/>
+                    </div>
+                </div>
             </li>
         {/each}
     </ul>
-    <button onclick={addItem}>
+    <button onclick={addItem} class="self-start flex items-center gap-3">
+        <PlusOutline/>
         Nuevo elemento
     </button>
 </div>

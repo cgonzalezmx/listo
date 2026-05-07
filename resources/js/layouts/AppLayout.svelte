@@ -5,7 +5,7 @@ import type { Snippet } from "svelte";
 let { children }: { children: Snippet } = $props();
 </script>
 
-<div>
+<div class="w-full">
     {@render children?.()}
     <PopupMenu/>
 </div>
