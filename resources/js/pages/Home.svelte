@@ -28,22 +28,30 @@ let { checklists }: Props = $props();
                                 {checklist.title ?? `Sin título ${i}`}
                             </div>
                         </Link>
-                        <button onclick={(event) => menuState.open(event, [
-                            {
-                                label: 'Archivar',
-                                command() {
-                                    console.log('Archivar: ' + checklist.id);
-                                    menuState.close();
-                                }
-                            },
-                            {
-                                label: 'Borrar',
-                                command() {
-                                    console.log('Borrar: ' + checklist.id);
-                                    menuState.close();
-                                }
+                        <button onclick={(event) => {
+                            if (menuState.isOpen) {
+                                menuState.close();
+                                return;
                             }
-                        ])}
+
+                            menuState.invoker = event.currentTarget;
+                            menuState.open(event, [
+                                {
+                                    label: 'Archivar',
+                                    command() {
+                                        console.log('Archivar: ' + checklist.id);
+                                        menuState.close();
+                                    }
+                                },
+                                {
+                                    label: 'Borrar',
+                                    command() {
+                                        console.log('Borrar: ' + checklist.id);
+                                        menuState.close();
+                                    }
+                                }
+                            ])
+                        }}
                         class="bg-indigo-300 px-2 cursor-pointer">
                             <DotsVerticalOutline/>
                         </button>
