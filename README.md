@@ -33,7 +33,8 @@ pnpm dev
 
  - [x] Initial backend configuration
  - [x] Create database logic
- - [ ] Implenent user autentication
+ - [x] Implenent user autentication
+ - [ ] CRUD checklists
  - [ ] Design the checklists dashboard
  - [ ] Implement websockets
  - [ ] Integrate an API
