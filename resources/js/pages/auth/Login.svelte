@@ -14,8 +14,8 @@ function submit(event: Event) {
 }
 </script>
 
-<form class="flex flex-col gap-4 border border-slate-300 p-6 w-[95%] lg:w-1/4 mx-auto">
+<form class="flex flex-col gap-4 bg-white rounded shadow p-6 w-[95%] lg:w-1/4 mx-auto self-center">
     <InputText bind:value={form.email} label="Correo electrónico"/>
     <InputPassword bind:value={form.password} label="Contraseña"/>
-    <button type="submit" onclick={submit} class="p-2 bg-purple-500 text-white font-semibold rounded self-start">Iniciar sesión</button>
+    <button type="submit" onclick={submit} class="p-2 bg-indigo-500 text-white font-semibold rounded self-start">Iniciar sesión</button>
 </form>
