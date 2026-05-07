@@ -1,19 +1,25 @@
 import type { Action } from "svelte/action";
-import { debounce } from "ts-debounce";
+import { debounce as d } from "ts-debounce";
 
-interface DebounceOptions {
-    callback: (ev: Event) => void;
+interface Config {
     delay?: number;
+    onUpdate: (target: EventTarget | null) => void;
 }
 
-export const debounceInput: Action<HTMLInputElement, DebounceOptions> = (el, opts) => {
+export const debounce: Action<HTMLInputElement, Config> = (input, conf) => {
     $effect(() => {
-        const { callback, delay = 500 } = opts;
-        const handleInput = debounce(callback, delay);
-        el.addEventListener('input', handleInput)
+        const { onUpdate, delay = 500 } = conf;
+        const handler = d(() => {
+            onUpdate(input);
+        }, delay);
+
+        const isText = ['text', 'number', 'password', 'email', 'search'].includes(input.type);
+        const eventType = isText ? 'input' : 'change';
+
+        input.addEventListener(eventType, () => handler());
 
         return () => {
-            el.removeEventListener('input', handleInput);
+            input.removeEventListener(eventType, () => handler());
         }
     });
 }

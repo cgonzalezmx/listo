@@ -4,8 +4,8 @@ import { router, Link } from "@inertiajs/svelte";
 import { ulid } from "ulid";
 import { formatDistanceToNow } from "date-fns";
 import { es } from 'date-fns/locale'
-import { debounce } from "ts-debounce";
-import { debounceInput } from "@/lib/actions/debounce.svelte";
+import { debounce } from "@/lib/actions/debounce.svelte";
+    import type { Item } from "@/types/item";
 
 interface Props {
     checklist: Checklist;
@@ -14,20 +14,29 @@ interface Props {
 let { checklist }: Props = $props();
 const timePassed = () => formatDistanceToNow(checklist.created_at, { locale: es, addSuffix: true});
 
-function updateChecklistTitle(ev: Event) {
-    const value = (ev.target as HTMLInputElement).value;
-    router.patch(`/checklists/${checklist.id}`, {title: value});
+function update(route: string, config: { target: EventTarget | null, attr: 'value' | 'checked', prop: string }) {
+    if (!config.target) return;
+    const { target, attr, prop } = config
+    const val = (target as HTMLInputElement)[attr];
+    router.patch(route, {[prop]: val})
 }
 
-const updateItemTitle = debounce((event: Event, itemId: string) => {
-    const value = (event.target as HTMLInputElement).value;
-    router.patch(`/items/${itemId}`, {title: value});
-}, 300);
+function updateChecklistTitle(target: EventTarget | null) {
+    update(`/checklists/${checklist.id}`, {
+        target,
+        attr: 'value',
+        prop: 'title'
+    });
+}
 
-const updateCheckedState = debounce((event: Event, itemId: string) => {
-    const checked = (event.target as HTMLInputElement).checked;
-    router.patch(`/items/${itemId}`, {is_checked: checked});
-}, 300);
+function updateItem(target: EventTarget | null, config: { id: string, prop: keyof Item }) {
+    const { id, prop } = config;
+    update(`/items/${id}`, {
+        target,
+        attr: prop === 'title' ? 'value' : 'checked',
+        prop
+    });
+}
 
 function addItem() {
     router.post(`/checklists/${checklist.id}/items`, {
@@ -40,15 +49,31 @@ function addItem() {
 
 <div class="flex flex-col w-[95vw] xl:w-2/3 bg-slate-50 rounded shadow mx-auto p-6">
     <Link href="/">Regresar</Link>
-    <input type="text" value={checklist.title} use:debounceInput={{ callback: updateChecklistTitle }} placeholder="Título" class="text-4xl mb-6">
+    <input use:debounce={{
+            onUpdate: updateChecklistTitle,
+            delay: 1000
+        }}
+        type="text"
+        value={checklist.title}
+        placeholder="Título"
+        class="text-4xl mb-6">
     <div class="text-slate-500 mb-3">
         {timePassed()}
     </div>
     <ul>
         {#each checklist.items as item (item.id)}
             <li class="mb-3">
-                <input type="checkbox" checked={item.is_checked} onchange={(event) => updateCheckedState(event, item.id)} class="">
-                <input type="text" value={item.title} oninput={(event) => updateItemTitle(event, item.id)} placeholder="Elemento">
+                <input use:debounce={{ onUpdate: (target) => updateItem(target, { id: item.id, prop: 'is_checked' }) }}
+                    type="checkbox"
+                    checked={item.is_checked}
+                    class="">
+                <input use:debounce={{
+                        onUpdate: (target) => updateItem(target, { id: item.id, prop: 'title' }),
+                        delay: 1000
+                    }}
+                    type="text"
+                    value={item.title}
+                    placeholder="Elemento">
             </li>
         {/each}
     </ul>
