@@ -24,7 +24,7 @@ let { checklists }: Props = $props();
             <div></div>
         </div>
         <div class="w-[95vw] xl:w-2/3 flex justify-center">
-            <ul class="w-[90%]">
+            <ul class="p-1 w-full">
                 {#each checklists as checklist, i (checklist.id)}
                     <li class="mb-3">
                         <div class="flex rounded shadow bg-white overflow-hidden">
