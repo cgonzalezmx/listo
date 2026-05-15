@@ -12,7 +12,10 @@ class ChecklistController extends Controller
     {
         $checklists = $request->user()->checklists;
 
-        return inertia('Home', ['checklists' => $checklists]);
+        return inertia('Home', [
+            'checklists' => $checklists,
+            'public_registration' => config('settings.public_registration', true)
+        ]);
     }
 
     public function edit(Checklist $checklist)

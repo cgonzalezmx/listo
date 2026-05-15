@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
 
@@ -35,7 +36,12 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
         Fortify::loginView(function() {
-            return inertia('auth/Login');
+            return Inertia::render('auth/Login', [
+                'public_registration' => config('settings.public_registration', true)
+            ]);
+        });
+        Fortify::registerView(function() {
+            return Inertia::render('users/Register');
         });
 
         RateLimiter::for('login', function (Request $request) {
